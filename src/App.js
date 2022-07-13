@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import Card from "./components/Card";
 
 function App() {
+
+  const [ elements, setElements ] = useState([
+    {
+      id: 0,
+      order: 0,
+      title: "Primero"
+    },
+    {
+      id: 1,
+      order: 1,
+      title: "Segundo"
+    },
+    {
+      id: 2,
+      order: 2,
+      title: "Tercero"
+    },
+    {
+      id: 3,
+      order: 3,
+      title: "Cuarto"
+    },
+  ])
+
+  function swapCardsOrder(firstCardOrder, secondCardOder) {
+    const currentElements = [...elements]
+    const firstCard = currentElements.find( item => item.order === firstCardOrder)
+    const secondCard = currentElements.find( item => item.order === secondCardOder)
+    firstCard.order = secondCardOder
+    secondCard.order = firstCardOrder
+    setElements(currentElements)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ul>
+      {elements.sort((first, second)=>first.order - second.order).map(
+        item => <Card key={item.id} element={item} onDropMethod={swapCardsOrder}/>
+      )}
+    </ul>
   );
 }
 
